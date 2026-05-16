@@ -223,7 +223,7 @@ input:focus,select:focus{border-color:var(--orange)}
         <div class="emoji-btn" onclick="pickEmoji('🏆')">🏆</div><div class="emoji-btn" onclick="pickEmoji('🦅')">🦅</div>
         <div class="emoji-btn" onclick="pickEmoji('🐉')">🐉</div><div class="emoji-btn" onclick="pickEmoji('🌈')">🌈</div>
       </div>
-      <input type="text" id="new-prof-name" placeholder="Nombre del perfil (ej: Lucía)">
+      <input type="text" id="new-prof-name" placeholder="Nombre del perfil (ej: Noa)">
       <button class="btn btn-main" onclick="createProfile()">+ CREAR PERFIL</button>
     </div>
     <button class="btn btn-sec" style="margin-top:8px" onclick="closeProfModal()">CERRAR</button>
@@ -535,16 +535,23 @@ function renderProfList(){
     :'<div class="empty" style="padding:12px"><p>Sin perfiles aún</p></div>';
 }
 async function createProfile(){
-  const name=document.getElementById('new-prof-name').value.trim();
-  if(!name)return showToast('Escribe un nombre','⚠️');
-  const{data,error}=await sb.from('profiles').insert({user_id:currentUser.id,name,avatar:_newAvatar}).select().single();
-  if(error)return showToast('Error al crear','⚠️');
-  const prof={id:data.id,name,avatar:_newAvatar};
-  profiles.push(prof);
-  if(!curProfile)curProfile=prof;
-  document.getElementById('new-prof-name').value='';
-  renderProfList();renderProfileChips();renderDashProfileFilter();
-  showToast('Perfil creado','✅');
+  const name=document.getElementById("new-prof-name").value.trim();
+  if(!name)return showToast("Escribe un nombre","⚠️");
+  if(!currentUser)return showToast("Sin sesión activa","⚠️");
+  try{
+    const{data,error}=await sb.from("profiles")
+      .insert({user_id:currentUser.id,name:name,avatar:_newAvatar})
+      .select().single();
+    if(error){console.error("Profile error:",error);showToast(error.message||"Error al crear","⚠️",4000);return;}
+    const prof={id:data.id,name,avatar:_newAvatar};
+    profiles.push(prof);
+    if(!curProfile)curProfile=prof;
+    document.getElementById("new-prof-name").value="";
+    _newAvatar="🏀";
+    document.getElementById("new-avatar-pick").innerHTML="🏀 <span style="font-size:.75rem;color:var(--dim)">toca para cambiar</span>";
+    renderProfList();renderProfileChips();renderDashProfileFilter();
+    showToast("Perfil creado","✅");
+  }catch(e){console.error("Profile exception:",e);showToast("Error de conexión","⚠️",4000);}
 }
 async function deleteProfile(id){
   if(!confirm('¿Eliminar este perfil? Sus sesiones quedarán sin perfil asignado.'))return;
