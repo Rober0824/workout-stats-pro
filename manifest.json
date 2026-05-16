@@ -1,0 +1,25 @@
+{
+  "name": "Workout Stats PRO",
+  "short_name": "Workout Stats",
+  "description": "Entrena, analiza y mejora tu juego",
+  "start_url": "/workout-stats-pro/workout_stats_pro.html",
+  "scope": "/workout-stats-pro/",
+  "display": "standalone",
+  "background_color": "#0a0e14",
+  "theme_color": "#0a0e14",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "Workout_Stats_Logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
