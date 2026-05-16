@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Test Login</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body style="background:#0a0e14;color:white;font-family:sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;margin:0">
+<div style="width:300px">
+  <h2>Test Login</h2>
+  <input id="email" type="email" placeholder="Email" style="width:100%;padding:10px;margin:5px 0;border-radius:8px;border:none;background:#1a2234;color:white;box-sizing:border-box"><br>
+  <input id="pass" type="password" placeholder="Password" style="width:100%;padding:10px;margin:5px 0;border-radius:8px;border:none;background:#1a2234;color:white;box-sizing:border-box"><br>
+  <button onclick="doLogin()" style="width:100%;padding:12px;margin-top:8px;background:#f97316;color:white;border:none;border-radius:8px;font-weight:bold;cursor:pointer">ENTRAR</button>
+  <div id="msg" style="margin-top:10px;padding:10px;border-radius:8px"></div>
+</div>
+<script>
+var sb = supabase.createClient(
+  'https://eokbgrxqwfbvzjcskcqy.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVva2Jncnhxd2ZidnpqY3NrY3F5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg3Mzg1MTIsImV4cCI6MjA5NDMxNDUxMn0.vaBz3AYV50Cm-i5YXH4Bkd5DTM_FoJDg4z5-xV9He9A'
+);
+
+function doLogin() {
+  var email = document.getElementById('email').value;
+  var pass = document.getElementById('pass').value;
+  var msg = document.getElementById('msg');
+  msg.style.background = '#1a2234';
+  msg.textContent = 'Conectando...';
+  sb.auth.signInWithPassword({email: email, password: pass})
+    .then(function(result) {
+      if (result.error) {
+        msg.style.background = '#7f1d1d';
+        msg.textContent = 'Error: ' + result.error.message;
+      } else {
+        msg.style.background = '#14532d';
+        msg.textContent = 'LOGIN OK - ' + result.data.user.email;
+      }
+    });
+}
+</script>
+</body>
+</html>
