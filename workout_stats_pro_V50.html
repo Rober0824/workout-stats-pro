@@ -3720,7 +3720,7 @@ function perfCalcDailyLoad(pid){
     var rpe=s.sessionRpe||5;
     if(mins<1)return;
     var mSueno=SLEEP_MAP[sleepByDate[d]]||1.00;
-    loads[d]=(loads[d]||0)+Math.round(mins*rpe*2.0*mSueno);
+    loads[d]=(loads[d]||0)+Math.round(mins*2.0*(rpe/10)*mSueno);
   });
   _pt.filter(function(t){return t.profile_id===pid&&t.completed;}).forEach(function(t){
     var d=t.date;if(!d)return;
@@ -3730,9 +3730,9 @@ function perfCalcDailyLoad(pid){
     var cBruta;
     if(isPartido){
       var wm=t.warmup_mins||0,gm=t.game_mins||0;
-      cBruta=(wm>0||gm>0)?(wm*1.5+gm*2.5)*rpe:(t.duration||0)*2.0*rpe;
+      cBruta=(wm>0||gm>0)?(wm*1.5+gm*2.5)*(rpe/10):(t.duration||0)*2.0*(rpe/10);
     } else {
-      cBruta=(t.duration||0)*maxCoef(types)*rpe;
+      cBruta=(t.duration||0)*maxCoef(types)*(rpe/10);
     }
     var mSueno=SLEEP_MAP[sleepByDate[d]]||1.00;
     var cNeta=Math.round(cBruta*mSueno);
