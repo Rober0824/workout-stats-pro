@@ -3708,7 +3708,8 @@ function perfCalcDailyLoad(pid){
   }
   var SLEEP_MAP={1:1.30,2:1.15,3:1.00,4:0.95,5:0.90};
   var sleepByDate={};
-  (wellness||[]).filter(function(w){return w.profile_id===pid&&w.sleep;}).forEach(function(w){
+  var _wellness=(typeof wellness!=='undefined'?wellness:[])||[];
+  _wellness.filter(function(w){return w.profile_id===pid&&w.sleep;}).forEach(function(w){
     if(w.date)sleepByDate[w.date.slice(0,10)]=parseInt(w.sleep)||3;
   });
   var loads={};
